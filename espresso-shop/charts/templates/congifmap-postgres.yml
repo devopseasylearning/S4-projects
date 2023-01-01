@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.database.postgres.main.name.configmap }}
+  labels:
+    app: {{ .Values.espresso_shop_reviews.name }}
+data:
+   {{- toYaml .Values.database.postgres.data | nindent 12 }}
+

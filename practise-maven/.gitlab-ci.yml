@@ -1,0 +1,147 @@
+########Declaring all stages
+stages:
+    - analyze
+    - maven
+    - package 
+    - build
+    - push
+    - deploy
+
+default:
+    tags:
+      - n1docker
+    image: maven:3.8.6-openjdk-18-slim
+    retry: 1
+
+variables:
+    SONAR_USER_HOME: /opt/sonar-scanner
+
+
+
+sonarqube:
+  variables:
+    GIT_DEPTH: "0"
+  stage: analyze
+  script:
+    - $SONAR_USER_HOME/bin/sonar-scanner
+  tags:
+    - n4docker
+  image: sonarsource/sonar-scanner-cli:latest
+  needs: []
+
+########## this will maven maven dependencies 
+maven-clean:
+    stage: maven
+    script:
+        - mvn clean
+    needs: [sonarqube]
+
+# ###############validate the project is correct and all necessary information is available
+maven-validate:
+    stage: maven
+    script:
+        - mvn validate
+
+# ############### compile the source code of the project
+maven-compile:
+    stage: maven
+    script:
+        - mvn compile
+
+# ############### test the compiled source code using a suitable unit testing framework. These tests should not require the code be packaged or deployed
+maven-test:
+    stage: maven
+    script:
+        - mvn test
+
+
+
+# ###############  take the compiled code and package it in its distributable format, such as a JAR.
+maven-package:
+    stage: package
+    script:
+        - mvn package
+    needs: [maven-clean, maven-validate, maven-compile, maven-test]
+    artifacts:
+      paths:
+        -  web/target/time-tracker-web-0.6.0-SNAPSHOT.war
+      expire_in: 1 week
+      when: always
+
+# ###############  run any checks on results of integration tests to ensure quality criteria are met
+maven-verify:
+    stage: build
+    script:
+        - mvn verify
+
+
+# ###############  run any checks on results of integration tests to ensure quality criteria are met
+maven-build:
+    stage: build
+    dependencies: 
+      - maven-package
+    script:
+        - TAG=`git rev-parse --short=4  HEAD`
+        - docker build -t $DOCKERHUB_USERNAME/maven:$TAG .
+    needs: [maven-package]
+    tags:
+      - n2shell
+# ###############  Login to dockerhub
+maven-login:
+    stage: build
+    script:
+        - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+    tags:
+      - n2shell
+
+# ###############  Push image to dockerhub
+maven-push:
+    stage: push
+    script:
+        - TAG=`git rev-parse --short=4  HEAD`
+        - docker push $DOCKERHUB_USERNAME/maven:$TAG
+    tags:
+      - n2shell
+    needs: [maven-verify,maven-build, maven-login]
+    only:
+        - develop
+
+
+# ###############  CLean docker enviroment
+maven-clean-docker:
+    stage: push
+    script:
+        - docker system prune -f -a || true 
+    tags:
+      - n2shell
+    only:
+        - develop
+
+# ###############  Generate compose file
+maven-deploy:
+    stage: deploy
+    script: | 
+        rm -rf docker-compose.yml || true
+        TAG=`git rev-parse --short=4  HEAD`
+        cat <<EOF > docker-compose.yml
+          version : "3.3"
+          services:
+            tomcat:
+                 image: $DOCKERHUB_USERNAME/maven:$TAG
+                 expose:
+                  - 90
+                  - 100
+                  - 8080
+                 container_name: tomcat
+                 restart: always
+                 ports: 
+                  - 9595:8080    
+        EOF
+        TAG=`git rev-parse --short=4  HEAD`
+        docker-compose up -d
+    tags:
+      - n2shell
+    needs: [maven-push,maven-clean-docker]
+    only:
+        - develop
+    environment: develop

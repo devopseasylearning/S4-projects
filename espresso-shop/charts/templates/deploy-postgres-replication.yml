@@ -1,0 +1,32 @@
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.database.postgres.name }}-replication  
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.espresso_shop_reviews.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.espresso_shop_reviews.name }}
+    spec:
+      containers:
+        - name: {{ .Values.database.postgres.name }}
+          image: "{{ .Values.database.postgres.image.repository }}:{{ .Values.database.postgres.image.tag }}"
+          imagePullPolicy: {{ .Values.database.postgres.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.database.postgres.service.ports.containerPort }}  
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.database.postgres.main.name.configmap }}-replication
+          volumeMounts:
+            - mountPath: {{ .Values.database.postgres.storage.persistanceVolume.volumeMounts.mountPath }}
+              name: {{ .Values.database.postgres.storage.persistanceVolume.volumeMounts.name }}
+      volumes:
+        - name: {{ .Values.database.postgres.storage.persistanceVolume.volumeMounts.name }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.database.postgres.storage.persistanceVolume.volumeMounts.persistentVolumeClaim.claimNameReplicas }}
+

@@ -1,0 +1,12 @@
+version: 0.2
+### This buildspec is for the CI pipeline
+phases:
+  build:
+    commands:
+      - cd auth
+      - docker build -t $IMAGE_REPO_NAME/weatherapp-auth:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      - cd ../UI
+      - docker build -t $IMAGE_REPO_NAME/weatherapp-ui:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      - cd ../weather
+      - docker build -t $IMAGE_REPO_NAME/weatherapp-weather:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+

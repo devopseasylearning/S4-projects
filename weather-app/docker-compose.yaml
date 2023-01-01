@@ -1,0 +1,49 @@
+version: "3.9"
+services:
+  auth:
+    restart: always
+    build: ./auth
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PASSWORD: my-secret-pw
+    networks:
+      - app-net
+  ui:
+    restart: always
+    build: ./UI
+    depends_on:
+      - auth
+      - weather
+    environment:
+      AUTH_HOST: auth
+      AUTH_PORT: 8080
+      WEATHER_HOST: weather
+      WEATHER_PORT: 5000
+    ports:
+      - "3000:3000"
+    networks:
+      - app-net
+  weather:
+    restart: always
+    build: ./weather
+    environment:
+      APIKEY: ecbc396f46mshb65cbb1f82cf334p1fcc87jsna5e962a3c542
+    networks:
+      - app-net
+  db:
+    restart: always
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+    networks:
+      - app-net
+    volumes:
+      - ./db-data:/var/lib/mysql
+
+networks:
+  app-net:
+    driver: bridge
+volumes:
+  db-data:

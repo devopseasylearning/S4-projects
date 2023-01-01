@@ -1,0 +1,26 @@
+version: 0.2
+### This buildspec is for the promotion pipeline
+env:
+  git-credential-helper: yes
+phases:
+  pre_build:
+    commands:
+      - cd /tmp
+      - git clone $REPO_URL
+      - cd $REPO_NAME
+      - export TAGGED_HASH=`git rev-list -n 1 $CI_COMMIT_TAG`
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $IMAGE_REPO_NAME
+  build:
+    commands:
+      - echo "Promoting Docker images"
+      - docker pull $IMAGE_REPO_NAME/weatherapp-ui:$TAGGED_HASH
+      - docker pull $IMAGE_REPO_NAME/weatherapp-auth:$TAGGED_HASH
+      - docker pull $IMAGE_REPO_NAME/weatherapp-weather:$TAGGED_HASH
+      - docker tag $IMAGE_REPO_NAME/weatherapp-ui:$TAGGED_HASH
+      - docker tag $IMAGE_REPO_NAME/weatherapp-auth:$TAGGED_HASH
+      - docker tag $IMAGE_REPO_NAME/weatherapp-weather:$TAGGED_HASH
+  post_build:
+    commands:
+      - docker push $IMAGE_REPO_NAME/weatherapp-auth:$CI_COMMIT_TAG
+      - docker push $IMAGE_REPO_NAME/weatherapp-ui:$CI_COMMIT_TAG
+      - docker push $IMAGE_REPO_NAME/weatherapp-weather:$CI_COMMIT_TAG

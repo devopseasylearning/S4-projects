@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Values.espresso_shop_product_catalog.name }}
+spec:
+  minAvailable: {{ .Values.PodDisruptionBudget }}
+  selector:
+    matchLabels:
+      app: {{ .Values.espresso_shop_product_catalog.name }}
+

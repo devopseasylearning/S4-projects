@@ -1,0 +1,19 @@
+
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.espresso_shop_product_catalog.name }}
+  labels:
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.espresso_shop_product_catalog.name }}
+  minReplicas: {{ .Values.HorizontalPodAutoscaler.Replicas.min }}
+  maxReplicas: {{ .Values.HorizontalPodAutoscaler.Replicas.max }}
+  metrics:
+    - type: {{ .Values.HorizontalPodAutoscaler.metrics.type }}
+      resource:
+        name: {{ .Values.HorizontalPodAutoscaler.metrics.resource.name }}
+        targetAverageUtilization: {{ .Values.HorizontalPodAutoscaler.metrics.resource.targetAverageUtilization }}

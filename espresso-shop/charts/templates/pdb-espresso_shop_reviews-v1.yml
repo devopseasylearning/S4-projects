@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Values.espresso_shop_reviews.name }}-v1
+spec:
+  minAvailable: {{ .Values.PodDisruptionBudget }}
+  selector:
+    matchLabels:
+      app: {{ .Values.espresso_shop_reviews.name }}-v1
+

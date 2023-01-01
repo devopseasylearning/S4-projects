@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment                 
+metadata:
+  name: {{ .Values.database.redis.name }}           
+spec:
+  replicas: {{ .Values.database.redis.replicas }}                 
+  selector:
+    matchLabels:
+      app: {{ .Values.espresso_shop_web.name }}     
+  template:                      
+    metadata:
+      labels:                   
+        app: {{ .Values.espresso_shop_web.name }}
+    spec:
+      containers:
+      - name: {{ .Values.database.redis.name }}
+        image: {{ .Values.database.redis.image.repository }}:{{ .Values.database.redis.image.tag }}
+        env:
+        - name: {{ .Values.database.redis.env.name1 }}
+          value: {{ .Values.database.redis.env.value1 }}
+        - name: {{ .Values.database.redis.env.name2 }}
+          value: {{ .Values.database.redis.env.value2 }}  
+        imagePullPolicy: {{ .Values.database.redis.imagePullPolicy }}
+        resources:
+          {{- toYaml .Values.database.redis.resources | nindent 12 }}
+        ports:
+          - containerPort: {{ .Values.database.redis.service.ports.containerPort }}
+

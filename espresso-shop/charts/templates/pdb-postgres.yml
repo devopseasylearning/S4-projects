@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Values.database.postgres.name }} 
+spec:
+  minAvailable: {{ .Values.PodDisruptionBudget }}
+  selector:
+    matchLabels:
+      app: {{ .Values.database.postgres.name }} 
+

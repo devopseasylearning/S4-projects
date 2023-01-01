@@ -1,0 +1,17 @@
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: {{ .Values.database.postgres.storage.persistanceVolume.volumeMounts.persistentVolumeClaim.claimNameReplicas }} 
+  labels:
+    type: {{ .Values.database.postgres.storage.persistanceVolume.type }}  
+    app: {{ .Values.espresso_shop_reviews.name }}
+spec:
+  storageClassName: {{ .Values.database.postgres.storage.persistanceVolume.storageClassName }}
+  capacity:
+    storage: {{ .Values.database.postgres.storage.persistanceVolume.capacity.storage }} # Sets PV Volume
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: {{ .Values.database.postgres.storage.persistanceVolume.hostPath.path }}
+

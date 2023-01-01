@@ -1,0 +1,14 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Values.database.postgres.storage.persistanceVolume.volumeMounts.persistentVolumeClaim.claimName }}   
+  labels:
+    app: {{ .Values.espresso_shop_reviews.name }}
+spec:
+  storageClassName: {{ .Values.database.postgres.storage.persistanceVolume.storageClassName }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.database.postgres.storage.persistanceVolume.capacity.storage }} 

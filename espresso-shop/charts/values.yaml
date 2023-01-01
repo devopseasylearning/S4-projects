@@ -1,0 +1,193 @@
+########### Values file
+PodDisruptionBudget: 1 
+replicas: 1
+espresso_shop_web: 
+    name: "espresso-shop-web"
+
+
+
+    image:
+        repository: devopseasylearning2021/s3-project01-espresso-shop
+        tag: v1.0.0
+    
+    env:
+      name1: ProductCatalogUrl
+      value1: "http://espresso-shop-product-catalog-svc:8091"
+      name2: ReviewsUrl
+      value2: "http://espresso-shop-reviews-svc:8092"
+
+    imagePullPolicy: Always
+
+    services:
+        containerName: http
+        containerPort: 80
+        protocol: TCP
+        type: NodePort
+        port: 8090
+
+    resources:
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+  
+espresso_shop_product_catalog:
+    name: espresso-shop-product-catalog
+    version: v1
+    image:
+        repository: "devopseasylearning2021/s3-project01-espresso-shop-product"
+        tag: v1.0.0
+
+    imagePullPolicy: Always
+
+    env:
+      name1: POSTGRES_DB
+      value1: postgres
+      name2: POSTGRES_USER
+      value2: postgres
+      name3: POSTGRES_PASSWORD
+      value3: postgres
+      name4: POSTGRES_HOST
+      value4: espresso-shop-postgres
+    
+    services:
+      containerName: http
+      containerPort: 80
+      protocol: TCP
+      type: ClusterIP
+      port: 8091
+
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+
+
+espresso_shop_reviews:
+    name: espresso-shop-reviews
+
+    image:
+        repository: "devopseasylearning2021/s3-project01-espresso-shop-review"
+        tag: v1.0.0
+
+    imagePullPolicy: Always
+
+    env:
+      name1: POSTGRES_DB
+      value1: postgres
+      name2: POSTGRES_USER
+      value2: postgres
+      name3: POSTGRES_PASSWORD
+      value3: postgres
+      name4: POSTGRES_HOST
+      value4: espresso-shop-postgres
+      name5: SERVICE_VERSION 
+      value5: "v1"
+      value6: "v2"
+
+    services:
+      containerName: http
+      containerPort: 80
+      protocol: TCP
+      type: ClusterIP
+      port: 8092
+
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+
+
+
+HorizontalPodAutoscaler:
+  Replicas:
+    min: 1
+    max: 20
+  metrics:
+      type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 50
+
+       
+database:
+  redis:
+      name: espresso-shop-redis
+      replicas: 3
+      env:
+         name1: REDIS_PASSWORD
+         value1: ETGAFATEH
+         name2: REDIS_HOST
+         value2: espresso-shop-redis 
+      image:
+        repository: "redis"
+        tag: latest
+
+      imagePullPolicy: IfNotPresent
+      resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+      service:
+        name: http
+        ports:
+           containerPort: 8080
+           port: 9090
+        type:  NodePort   
+            
+
+  postgres:
+    name: postgres
+    image:
+        repository: "postgres"
+        tag: "10.1"
+
+    imagePullPolicy: "IfNotPresent"
+    main:
+        name:
+          configmap: postgres-config
+        configName: config
+
+    
+
+
+
+    service:
+      ports:
+         containerPort: 5432
+      type: ClusterIP
+       
+    data:
+        POSTGRES_DB: postgres
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+    
+
+
+    storage:
+      persistanceVolume:
+        name: postgres-pv-volume 
+        type: local
+        storageClassName: do-block-storage-retain
+        capacity:
+           storage: 3Gi 
+        hostPath:
+              path: "/mnt/data"
+        volumeMounts:
+            mountPath: "/var/lib/postgresql/data-s3"
+            name: postgredb
+            persistentVolumeClaim:
+                  claimName: postgres-pv-claim
+                  claimNameReplicas: postgres-replication-pv-claim
+
+
+
+

@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: espresso_shop_web
+spec:
+  minAvailable: {{ .Values.PodDisruptionBudget }}
+  selector:
+    matchLabels:
+      app: espresso_shop_web
+

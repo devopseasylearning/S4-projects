@@ -1,0 +1,36 @@
+---
+# Source: {{ .Values.espresso_shop_product_catalog.name }}/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.espresso_shop_product_catalog.name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.espresso_shop_product_catalog.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.espresso_shop_product_catalog.name }}
+        version: {{ .Values.espresso_shop_product_catalog.version }}
+    spec:
+      containers:
+        - name: {{ .Values.espresso_shop_product_catalog.name }}
+          image: "{{ .Values.espresso_shop_product_catalog.image.repository }}:{{ .Values.espresso_shop_product_catalog.image.tag }}"
+          imagePullPolicy: {{ .Values.espresso_shop_product_catalog.imagePullPolicy }}
+          env:
+            - name: {{ .Values.espresso_shop_product_catalog.env.name1 }}
+              value: {{ .Values.espresso_shop_product_catalog.env.value1 }}
+            - name: {{ .Values.espresso_shop_product_catalog.env.name2 }}
+              value: {{ .Values.espresso_shop_product_catalog.env.value2 }}
+            - name: {{ .Values.espresso_shop_product_catalog.env.name3 }}
+              value: {{ .Values.espresso_shop_product_catalog.env.value3 }}
+            - name: {{ .Values.espresso_shop_product_catalog.env.name4 }}
+              value: {{ .Values.espresso_shop_product_catalog.env.value4 }}
+          ports:
+            - name: {{ .Values.espresso_shop_product_catalog.services.containerName }}
+              containerPort: {{ .Values.espresso_shop_product_catalog.services.containerPort }}
+              protocol: {{ .Values.espresso_shop_product_catalog.services.protocol }}
+          resources:
+             {{- toYaml .Values.espresso_shop_product_catalog.resources | nindent 12 }}
