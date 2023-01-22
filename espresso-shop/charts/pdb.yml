@@ -1,0 +1,87 @@
+---
+# Source: s3/templates/pdb-espresso_shop_product_catalog.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: espresso-shop-product-catalog
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-product-catalog
+
+
+---
+# Source: s3/templates/pdb-espresso_shop_reviews-v1.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: espresso-shop-reviews-v1
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-reviews-v1
+
+
+---
+# Source: s3/templates/pdb-espresso_shop_reviews-v2.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: espresso-shop-reviews-v2
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-reviews-v2
+---
+# Source: s3/templates/pdb-espresso_shop_web.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: espresso_shop_web
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: espresso_shop_web
+
+
+---
+# Source: s3/templates/pdb-postgres-replication.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: postgres-replication
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: postgres-replication
+
+
+---
+# Source: s3/templates/pdb-postgres.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: postgres 
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: postgres
+
+
+---
+# Source: s3/templates/pdb-redis.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: redis
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: redis

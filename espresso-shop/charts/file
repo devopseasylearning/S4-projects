@@ -1,0 +1,604 @@
+---
+# Source: s3/templates/pdb-espresso_shop_product_catalog.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: espresso-shop-product-catalog
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-product-catalog
+---
+# Source: s3/templates/pdb-espresso_shop_reviews-v1.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: espresso-shop-reviews-v1
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-reviews-v1
+---
+# Source: s3/templates/pdb-espresso_shop_reviews-v2.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: espresso-shop-reviews-v2
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-reviews-v2
+---
+# Source: s3/templates/pdb-espresso_shop_web.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: espresso_shop_web
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: espresso_shop_web
+---
+# Source: s3/templates/pdb-postgres-replication.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: postgres-replication
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: postgres-replication
+---
+# Source: s3/templates/pdb-postgres.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: postgres 
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: postgres
+---
+# Source: s3/templates/pdb-redis.yml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: redis
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: redis
+---
+# Source: s3/templates/congifmap-postgres-replication.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config-replication
+  labels:
+    app: espresso-shop-reviews
+data:
+            POSTGRES_DB: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+---
+# Source: s3/templates/congifmap-postgres.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: espresso-shop-reviews
+data:
+            POSTGRES_DB: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+---
+# Source: s3/templates/pv-postgres-replication.yml
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: postgres-replication-pv-claim 
+  labels:
+    type: local  
+    app: espresso-shop-reviews
+spec:
+  storageClassName: do-block-storage-retain
+  capacity:
+    storage: 3Gi # Sets PV Volume
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /mnt/data
+---
+# Source: s3/templates/pv-postgres.yml
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: postgres-pv-volume  
+  labels:
+    type: local  
+    app: espresso-shop-reviews
+spec:
+  storageClassName: do-block-storage-retain
+  capacity:
+    storage: 3Gi 
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /mnt/data
+---
+# Source: s3/templates/pvc-postgres-replication.yml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-replication-pv-claim 
+  labels:
+    app: espresso-shop-reviews
+spec:
+  storageClassName: do-block-storage-retain
+  accessModes:
+    - ReadWriteMany 
+  resources:
+    requests:
+      storage: 3Gi
+---
+# Source: s3/templates/pvc-postgres.yml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pv-claim   
+  labels:
+    app: espresso-shop-reviews
+spec:
+  storageClassName: do-block-storage-retain
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+---
+# Source: s3/templates/service-espresso_shop_product_catalog.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: espresso-shop-product-catalog-svc
+  labels:
+    app: espresso-shop-product-catalog
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8091
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: espresso-shop-product-catalog
+---
+# Source: s3/templates/service-espresso_shop_reviews.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: espresso-shop-reviews-svc
+  labels:
+    app: espresso-shop-reviews
+    version: v1
+    version: v2
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8092
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: espresso-shop-reviews
+---
+# Source: s3/templates/service-espresso_shop_web.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: espresso-shop-web-svc
+  labels:
+    app: espresso-shop-web
+spec:
+  type: NodePort
+  ports:
+    - port: 8090
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: espresso-shop-web
+---
+# Source: s3/templates/service-postgres-replication.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-replication
+  labels:
+    app: espresso-shop-reviews
+spec:
+  type: ClusterIP 
+  ports:
+    - port: 5432 
+  selector:
+    app: espresso-shop-reviews
+---
+# Source: s3/templates/service-postgres.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres 
+  labels:
+    app: espresso-shop-reviews
+spec:
+  type: ClusterIP 
+  ports:
+    - port: 5432 
+  selector:
+    app: espresso-shop-reviews
+---
+# Source: s3/templates/service-redis.yml
+apiVersion: v1
+kind: Service                    
+metadata:
+  name: espresso-shop-redis 
+  labels:
+    app: espresso-shop-web
+spec:
+  type: NodePort             
+  ports:                         
+  - name: http
+    port: 9090
+    targetPort: 8080
+  selector:
+    app: espresso-shop-web
+---
+# Source: s3/templates/deploy-espresso_shop_product_catalog.yml
+# Source: espresso-shop-product-catalog/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: espresso-shop-product-catalog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-product-catalog
+  template:
+    metadata:
+      labels:
+        app: espresso-shop-product-catalog
+        version: v1
+    spec:
+      containers:
+        - name: espresso-shop-product-catalog
+          image: "devopseasylearning2021/s3-project01-espresso-shop-product:v1.0.0"
+          imagePullPolicy: Always
+          env:
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_HOST
+              value: espresso-shop-postgres
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 250m
+              memory: 64Mi
+---
+# Source: s3/templates/deploy-espresso_shop_reviews-v1.yml
+# Source: espresso-shop-reviews-v1/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: espresso-shop-reviews-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-reviews
+  template:
+    metadata:
+      labels:
+        app: espresso-shop-reviews
+        version: v1
+    spec:
+      containers:
+      - name: espresso-shop-reviews
+        image: "devopseasylearning2021/s3-project01-espresso-shop-review:v1.0.0"
+        imagePullPolicy: Always
+        env:
+          - name: POSTGRES_DB
+            value: postgres
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PASSWORD
+            value: postgres
+          - name: POSTGRES_HOST
+            value: espresso-shop-postgres
+          - name: SERVICE_VERSION
+            value: v1
+        ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+        resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 250m
+              memory: 64Mi
+---
+# Source: s3/templates/deploy-espresso_shop_reviews-v2.yml
+# Source: espresso-shop-reviews-v1/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: espresso-shop-reviews-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-reviews
+  template:
+    metadata:
+      labels:
+        app: espresso-shop-reviews
+        version: v2
+    spec:
+      containers:
+      - name: espresso-shop-reviews
+        image: "devopseasylearning2021/s3-project01-espresso-shop-review:v1.0.0"
+        imagePullPolicy: Always
+        env:
+          - name: POSTGRES_DB
+            value: postgres
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PASSWORD
+            value: postgres
+          - name: POSTGRES_HOST
+            value: espresso-shop-postgres
+          - name: SERVICE_VERSION
+            value: v2
+        ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+        resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 250m
+              memory: 64Mi
+---
+# Source: s3/templates/deploy-espresso_shop_web.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: espresso-shop-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-web
+  template:
+    metadata:
+      labels:
+        app: espresso-shop-web
+        version: v1
+    spec:
+      containers:
+        - name: espresso-shop-web
+          image: "devopseasylearning2021/s3-project01-espresso-shop:v1.0.0"
+          env:
+            - name: ProductCatalogUrl
+              value: http://espresso-shop-product-catalog-svc:8091
+            - name: ReviewsUrl
+              value: http://espresso-shop-reviews-svc:8092
+            - name: REDIS_PASSWORD
+              value: ETGAFATEH
+            - name: REDIS_HOST
+              value: espresso-shop-redis   
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 250m
+              memory: 64Mi
+---
+# Source: s3/templates/deploy-postgres-replication.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-replication  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-reviews
+  template:
+    metadata:
+      labels:
+        app: espresso-shop-reviews
+    spec:
+      containers:
+        - name: postgres
+          image: "postgres:10.1"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432  
+          envFrom:
+            - configMapRef:
+                name: postgres-config-replication
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data-s3
+              name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-replication-pv-claim
+---
+# Source: s3/templates/deploy-postgres.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-reviews
+  template:
+    metadata:
+      labels:
+        app: espresso-shop-reviews
+    spec:
+      containers:
+        - name: postgres
+          image: "postgres:10.1"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432  
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data-s3
+              name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
+---
+# Source: s3/templates/deploy-redis.yml
+apiVersion: apps/v1
+kind: Deployment                 
+metadata:
+  name: espresso-shop-redis           
+spec:
+  replicas: 3                 
+  selector:
+    matchLabels:
+      app: espresso-shop-web     
+  template:                      
+    metadata:
+      labels:                   
+        app: espresso-shop-web
+    spec:
+      containers:
+      - name: espresso-shop-redis
+        image: redis:latest
+        env:
+        - name: REDIS_PASSWORD
+          value: ETGAFATEH
+        - name: REDIS_HOST
+          value: espresso-shop-redis  
+        imagePullPolicy: IfNotPresent
+        resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+        ports:
+          - containerPort: 8080
+---
+# Source: s3/templates/hpa-espresso_shop_product_catalog.yml
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: espresso-shop-product-catalog
+  labels:
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: espresso-shop-product-catalog
+  minReplicas: 1
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 50
+---
+# Source: s3/templates/hpa-espresso_shop_reviews-v1.yml
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: espresso-shop-reviews-v1
+  labels:
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: espresso-shop-reviews-v1
+  minReplicas: 1
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 50
+---
+# Source: s3/templates/hpa-espresso_shop_reviews-v2.yml
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: espresso-shop-reviews-v2
+  labels:
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: espresso-shop-reviews-v2
+  minReplicas: 1
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 50
+---
+# Source: s3/templates/hpa-espresso_shop_web.yml
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: espresso-shop-web
+  labels:
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: espresso-shop-web
+  minReplicas: 1
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 50

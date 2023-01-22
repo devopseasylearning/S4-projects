@@ -1,0 +1,44 @@
+---
+# Source: s3/templates/deploy-espresso_shop_reviews-v2.yml
+# Source: espresso-shop-reviews-v1/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: espresso-shop-reviews-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-reviews
+  template:
+    metadata:
+      labels:
+        app: espresso-shop-reviews
+        version: v2
+    spec:
+      containers:
+      - name: espresso-shop-reviews
+        image: "devopseasylearning2021/s3-project01-espresso-shop-review:v1.0.0"
+        imagePullPolicy: Always
+        env:
+          - name: POSTGRES_DB
+            value: postgres
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PASSWORD
+            value: postgres
+          - name: POSTGRES_HOST
+            value: espresso-shop-postgres
+          - name: SERVICE_VERSION
+            value: v2
+        ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+        resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 250m
+              memory: 64Mi

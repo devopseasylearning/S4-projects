@@ -1,0 +1,41 @@
+---
+# Source: s3/templates/deploy-espresso_shop_web.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: espresso-shop-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: espresso-shop-web
+  template:
+    metadata:
+      labels:
+        app: espresso-shop-web
+        version: v1
+    spec:
+      containers:
+        - name: espresso-shop-web
+          image: "devopseasylearning2021/s3-project01-espresso-shop:v1.0.0"
+          env:
+            - name: ProductCatalogUrl
+              value: http://espresso-shop-product-catalog-svc:8091
+            - name: ReviewsUrl
+              value: http://espresso-shop-reviews-svc:8092
+            - name: REDIS_PASSWORD
+              value: ETGAFATEH
+            - name: REDIS_HOST
+              value: espresso-shop-redis   
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 250m
+              memory: 64Mi

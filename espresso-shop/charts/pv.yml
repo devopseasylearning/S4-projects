@@ -1,0 +1,37 @@
+
+
+# Source: s3/templates/pv-postgres-replication.yml
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: postgres-replication-pv-claim 
+  labels:
+    type: local  
+    app: espresso-shop-reviews
+spec:
+  storageClassName: do-block-storage-retain
+  capacity:
+    storage: 3Gi # Sets PV Volume
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /mnt/data
+
+
+---
+# Source: s3/templates/pv-postgres.yml
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: postgres-pv-volume  
+  labels:
+    type: local  
+    app: espresso-shop-reviews
+spec:
+  storageClassName: do-block-storage-retain
+  capacity:
+    storage: 3Gi 
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /mnt/data
