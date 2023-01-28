@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.app_name }}
+  name: {{ .Values.labels.app2 }}
   labels:
-    app: {{ .Values.labels.app }}
+    app: {{ .Values.labels.app2 }}
     version: {{ .Values.labels.version }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
@@ -12,19 +12,25 @@ spec:
   selector:
     matchLabels:
     #  labels: 
-        app: {{ .Values.labels.app }}
-        version: {{ .Values.labels.version }}
+        app: {{ .Values.labels.app2 }}
+        version: {{ .Values.labels.version2 }}
+  minReadySeconds: {{ .Values.minReadySeconds }}
+  strategy:
+    type: {{ .Values.strategy.type }}
+    rollingUpdate:
+      maxSurge: {{ .Values.strategy.rollingUpdate.maxSurge }}
+      maxUnavailable: {{ .Values.strategy.rollingUpdate.maxUnavailable }}
   template:
     metadata:
       labels:
-        app: {{ .Values.labels.app }}
-        version: {{ .Values.labels.version }}
+        app: {{ .Values.labels.app2 }}
+        version: {{ .Values.labels.version2 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "expresso.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.labels.app2 }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -34,9 +40,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           env:
            - name: {{ .Values.connection.productKey }}
-             value: {{ .Values.connection.productionValue }}
-           - name: {{ .Values.connection.reviewKey }}
-             value: {{ .Values.connection.reviewValue }}
+             value: {{ .Values.connection.productionValue2 }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
