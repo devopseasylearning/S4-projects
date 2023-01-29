@@ -3,8 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Values.labels.app }}
   labels: 
-    app: {{ .Values.labels.app }}
-    version: {{ .Values.labels.version }}
+    app: {{ .Values.app_name }}
 spec:  
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -12,8 +11,7 @@ spec:
   selector:
     matchLabels:
     #  labels: 
-        app: {{ .Values.labels.app }}
-        version: {{ .Values.labels.version }}
+        app: {{ .Values.app_name }}
   minReadySeconds: {{ .Values.minReadySeconds }}
   strategy:
     type: {{ .Values.strategy.type }}
@@ -23,14 +21,14 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Values.labels.app }}
+        app: {{ .Values.app_name }}
         version: {{ .Values.labels.version }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ .Values.labels.app }}
+      serviceAccountName: {{ .Values.app_name }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

@@ -3,12 +3,12 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .Values.labels.app }}
   labels:
-    app: {{ .Values.labels.app }}
+    app: {{ .Values.app_name }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ .Values.labels.app }}
+    name: {{ .Values.app_name }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

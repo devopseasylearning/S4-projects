@@ -4,7 +4,6 @@
 
 replicaCount: 1
 app_name: espresso-shop-reviews  
-
 image:
   repository: devopseasylearning2021/s3-project01-espresso-shop-review 
   pullPolicy: IfNotPresent
@@ -35,7 +34,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 8092
   targetPort: 80
 

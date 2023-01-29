@@ -3,8 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Values.labels.app2 }}
   labels:
-    app: {{ .Values.labels.app2 }}
-    version: {{ .Values.labels.version }}
+    app: {{ .Values.app_name }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -12,8 +11,7 @@ spec:
   selector:
     matchLabels:
     #  labels: 
-        app: {{ .Values.labels.app2 }}
-        version: {{ .Values.labels.version2 }}
+        app: {{ .Values.app_name }}
   minReadySeconds: {{ .Values.minReadySeconds }}
   strategy:
     type: {{ .Values.strategy.type }}
@@ -23,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Values.labels.app2 }}
+        app: {{ .Values.app_name }}
         version: {{ .Values.labels.version2 }}
     spec:
       {{- with .Values.imagePullSecrets }}

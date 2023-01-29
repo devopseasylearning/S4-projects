@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-app_name: espresso-shop-product
+app_name: espresso-shop-product-catalog
 
 image:
   repository: devopseasylearning2021/s3-project01-espresso-shop-product 
@@ -19,7 +19,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "espresso-shop-product"
+  name: "espresso-shop-product-catalog"
 
 podAnnotations: {}
 
@@ -35,7 +35,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 8091
   targetPort: 80
 
@@ -80,7 +80,7 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 labels: 
-    app: espresso-shop-product
+    app: espresso-shop-product-catalog
     version: v1
 
 connection:
