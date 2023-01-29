@@ -98,4 +98,7 @@ strategy:
     maxSurge: 1
     maxUnavailable: 1  
 
-    
+postgres:
+  username: "postgres"
+  password: "TlhZJmdlcCNTWG4qNnJ1VkpMdldkekRyIVZhV3hNKkJF"
+  database: "espresso"  

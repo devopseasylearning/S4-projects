@@ -40,6 +40,9 @@ spec:
            - name: {{ .Values.connection.productKey }}
              value: {{ .Values.connection.productionValue }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+          - secretRef:
+              name: {{ .Values.app_name }} 
           ports:
             - name: http
               containerPort: {{ .Values.service.targetPort }}

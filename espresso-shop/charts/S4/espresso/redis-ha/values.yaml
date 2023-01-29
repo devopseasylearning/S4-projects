@@ -329,13 +329,13 @@ sentinel:
   ## Configures sentinel with AUTH (requirepass params)
   auth: false
 
-  # password: password
+  # password: "bGuNQc-2VX8ZV99?kHy84UpsEUjzX^yP%zj"
 
   ## Use existing secret containing key `authKey` (ignores sentinel.password)
   # existingSecret: sentinel-secret
 
   ## Defines the key holding the sentinel password in existing secret.
-  authKey: sentinel-password
+  authKey: "P2QyN%*_CTn47P2zcDL3ekn&K"
 
   # liveness probe parameters for sentinel container
   livenessProbe:

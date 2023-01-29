@@ -38,11 +38,9 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          # env:
-          #  - name: {{ .Values.connection.productKey }}
-          #    value: {{ .Values.connection.productionValue }}
-          #  - name: {{ .Values.connection.reviewKey }}
-          #    value: {{ .Values.connection.reviewValue }}
+          envFrom:
+          - secretRef:
+              name: {{ .Values.app_name }} 
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http

@@ -38,6 +38,7 @@ service:
   type: NodePort
   port: 8090
   targetPort: 80
+  nodePort: 30007
 
 ingress:
   enabled: true
@@ -98,4 +99,6 @@ strategy:
     maxSurge: 1
     maxUnavailable: 1  
 
-    
+redis: 
+   authKey: "UDJReU4lKl9DVG40N1AyemNETDNla24mSw=="
+   password: "Ykd1TlFjLTJWWDhaVjk5P2tIeTg0VXBzRVVqelheeVAlemo="    
