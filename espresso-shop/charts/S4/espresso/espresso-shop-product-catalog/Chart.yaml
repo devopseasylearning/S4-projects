@@ -1,7 +1,7 @@
 apiVersion: v2
 name: expresso
 description: A Helm chart for Kubernetes
-
+# do not forget to write a Dokerfile that will set unprilege users and select that image requirement as suggested
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
