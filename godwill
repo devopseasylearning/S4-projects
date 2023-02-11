@@ -1,0 +1,10 @@
+To delete a branch on GitHub, follow these steps:
+
+Open the repository on GitHub.
+Go to the "Branches" section in the repository.
+Find the branch you want to delete and click on it.
+Click the "Delete" button.
+Confirm the deletion by typing the name of the branch and then click "Delete branch."
+Note: You can only delete a branch if it has been fully merged into another branch and is no longer needed.
+
+we are moving
