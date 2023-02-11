@@ -5,3 +5,8 @@ RUN mkdir app
 WORKDIR app 
 RUN apt install -y ansible curl vim wget
 CMD ["bash"]
+if 
+then
+also
+if
+$$$$$$$$
