@@ -10,3 +10,8 @@ phases:
       - cd ../weather
       - docker build -t $IMAGE_REPO_NAME/weatherapp-weather:$CODEBUILD_RESOLVED_SOURCE_VERSION .
 
+fwdfedfvdevfwrfv
+sadfdwsfcdwfcdw
+xvcdxsacvdsfcfwde
+adsvfdvfcdwf
+cdw
