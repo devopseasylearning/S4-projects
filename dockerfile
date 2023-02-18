@@ -7,5 +7,3 @@ WORKDIR julie
 RUN adduser s4julie;echo 's4julie:777' | chpasswd
 USER s4julie
 ENTRYPOINT ["mysql"]
-mnmbvnvb
-kjhnbjg,kjb.uhkjn
