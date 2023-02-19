@@ -1,0 +1,68 @@
+DevOps
+
+Article
+Talk
+Read
+Edit
+View history
+Page protected with pending changes
+From Wikipedia, the free encyclopedia
+DevOps is a methodology in the software development and IT industry. Used as a set of practices and tools, DevOps integrates and automates the work of software development (Dev) and IT operations (Ops) as a means for improving and shortening the systems development life cycle.[1] DevOps is complementary to agile software development; several DevOps aspects came from the agile way of working.
+
+Definition
+Other than it being a cross-functional combination (and a portmanteau) of the terms and concepts for "development" and "operations", academics and practitioners have not developed a universal definition for the term "DevOps".[a][b][c][d] Most often, DevOps is characterized by key principles: shared ownership, workflow automation, and rapid feedback.
+
+From an academic perspective, Len Bass, Ingo Weber, and Liming Zhu—three computer science researchers from the CSIRO and the Software Engineering Institute—suggested defining DevOps as "a set of practices intended to reduce the time between committing a change to a system and the change being placed into normal production, while ensuring high quality".[5]
+
+However, the term is used in multiple contexts. At its most successful, DevOps is a combination of specific practices, culture change, and tools.[6]
+
+History
+
+This section is in list format but may read better as prose. You can help by converting this section, if appropriate. Editing help is available. (July 2022)
+In 2009, the first conference named devopsdays was held in Ghent, Belgium. The conference was founded by Belgian consultant, project manager and agile practitioner Patrick Debois.[7][8] The conference has now spread to other countries.[9]
+
+In 2012, a report called “State of DevOps” was first published by Alanna Brown at Puppet.[10][11]
+
+As of 2014, the annual State of DevOps report was published by Nicole Forsgren, Gene Kim, Jez Humble and others. They stated that the adoption of DevOps was accelerating.[12][13] Also in 2014, Lisa Crispin and Janet Gregory wrote the book More Agile Testing, containing a chapter on testing and DevOps.[14][15]
+
+In 2016 the DORA metrics for throughput (deployment frequency, lead time for changes), and stability (mean time to recover, change failure rate) were published in the State of DevOps report.[10]
+
+Relationship to other approaches
+Many of the ideas fundamental to DevOps practices are inspired by, or mirror, other well known practices such as Lean and Deming's Plan-Do-Check-Act cycle, through to The Toyota Way and the Agile approach of breaking down components and batch sizes.[16] Contrary to the "top-down" proscriptive approach and rigid framework of ITIL in the 1990s, DevOps is "bottom-up" and a flexible practice, created by software engineers, with software engineer needs in mind.[17]
+
+Agile
+Main article: Agile software development
+The motivations for what has become modern DevOps and several standard DevOps practices such as automated build and test, continuous integration, and continuous delivery originated in the Agile world, which dates (informally) to the 1990s, and formally to 2001. Agile development teams using methods such as extreme programming couldn't "satisfy the customer through early and continuous delivery of valuable software"[18] unless they subsumed the operations / infrastructure responsibilities associated with their applications, many of which they automated. Because Scrum emerged as the dominant Agile framework in the early 2000s and it omitted the engineering practices that were part of many Agile teams, the movement to automate operations / infrastructure functions splintered from Agile and expanded into what has become modern DevOps. Today, DevOps focuses on the deployment of developed software, whether it is developed using Agile oriented methodologies or other methodologies.
+
+ArchOps
+ArchOps presents an extension for DevOps practice, starting from software architecture artifacts, instead of source code, for operation deployment.[19] ArchOps states that architectural models are first-class entities in software development, deployment, and operations.
+
+CI/CD
+Main article: CI/CD
+Automation is a core principle for achieving DevOps success and CI/CD is a critical component.[20] Plus, improved collaboration and communication between and within teams helps achieve faster time to market, with reduced risks.[21]
+
+Site-reliability engineering
+Main article: Site reliability engineering
+In 2003, Google developed site reliability engineering (SRE), an approach for releasing new features continuously into large-scale high-availability systems while maintaining high-quality end-user experience.[22] While SRE predates the development of DevOps, they are generally viewed as being related to each other.
+
+Toyota production system, lean thinking, kaizen
+Main article: Toyota Production System
+Toyota production system, also known under the acronym TPS, was the inspiration for lean thinking with its focus on continuous improvement, kaizen, flow and small batches. The andon cord principle to create fast feedback, swarm and solve problems stems from TPS.[23][24]
+
+DevSecOps, shifting security left
+DevSecOps is an augmentation of DevOps to allow for security practices to be integrated into the DevOps approach. Contrary to a traditional centralized security team model, each delivery team is empowered to factor in the correct security controls into their software delivery. Security practices and testing are performed earlier in the development lifecycle, hence the term "shift left" can be used. Security is tested in three main areas: static, software composition, and dynamic.
+
+Checking the code statically via static application security testing (SAST) is white-box testing with special focus on security. Depending on the programming language, different tools are needed to do such static code analysis. The software composition is analyzed, especially libraries and their versions are checked against vulnerability lists published by CERT and other expert groups. When giving software to clients, licenses and its match to the one of the software distributed are in focus, especially copyleft licenses. Dynamic testing is also called black-box testing. The software is tested without knowing its inner functions. In DevSecOps it is on one hand called dynamically (DAST), or penetration testing. The goal is to catch, amongst others, errors like cross-site scripting, or SQL injection early. Threat types are for example published by the open web application security project, e.g. its TOP10.[25] On the other hand, especially with microservices interactive application testing (IAST) is helpful to check which code is executed when running automated functional tests, the focus is to detect vulnerabilities within the applications. Contrary to SAST and DAST, IAST works inside the application.
+
+DevSecOps has also been described as a cultural shift involving a holistic approach to producing secure software by integrating security education, secure by design, and security automation.[26]
+
+Cultural change
+DevOps initiatives can create cultural changes in companies[27] by transforming the way operations, developers, and testers collaborate during the development and delivery processes.[28] Getting these groups to work cohesively is a critical challenge in enterprise DevOps adoption.[29][30] DevOps is as much about culture, as it is about the toolchain.[31]
+
+Microservices
+Although in principle it is possible to practice DevOps with any architectural style, the microservices architectural style is becoming the standard for building continuously deployed systems. Small size service allows the architecture of an individual service to emerge through continuous refactoring.[32]
+
+DevOps automation
+It also supports consistency, reliability, and efficiency within the organization, and is usually enabled by a shared code repository or version control. As DevOps researcher Ravi Teja Yarlagadda hypothesizes, "Through DevOps, there is an assumption that all functions can be carried out, controlled, and managed in a central place using a simple code."[33]
+
+Automation with version control
