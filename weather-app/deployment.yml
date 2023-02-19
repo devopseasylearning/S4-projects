@@ -1,0 +1,20 @@
+version: 0.2
+### This buildspec is for the deployment pipeline
+phases:
+  pre_build:
+    commands:
+      - curl -s https://get.helm.sh/helm-v3.7.2-linux-amd64.tar.gz  | tar xzf - linux-amd64/helm  --strip-components 1 && mv helm /usr/local/bin
+      - curl -sL "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $IMAGE_REPO_NAME
+  build:
+    commands:
+      - if ! $CI_COMMIT_TAG; then exit 1; fi
+      - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME 
+      - cd weatherapp-auth
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm dependency build .
+      - helm upgrade --install weatherapp-auth -n staging --set mysql.auth.rootPassword=$DB_PASSWORD --set image.repository=$IMAGE_REPO_NAME/weatherapp-auth --set image.tag=$CI_COMMIT_TAG .
+      - cd ../weatherapp-ui
+      - helm upgrade --install weatherapp-ui -n staging --set image.repository=$IMAGE_REPO_NAME/weatherapp-ui --set image.tag=$CI_COMMIT_TAG .
+      - cd ../weatherapp-weather
+      - helm upgrade --install weatherapp-weather -n staging --set apikey=$API_KEY --set image.repository=$IMAGE_REPO_NAME/weatherapp-weather --set image.tag=$CI_COMMIT_TAG .
