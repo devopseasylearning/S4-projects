@@ -1,0 +1,50 @@
+FROM alpine/terragrunt:1.3.6
+ENV USER=argocd
+RUN apk update && \
+    apk add ansible && \
+    apk add py3-boto && \
+    apk add gcc && \
+    apk add bash && \
+    apk add py3-certifi && \
+    apk add python3-dev && \
+    apk add curl && \
+    apk add wget && \
+    apk add py3-jmespath && \
+    apk add musl-dev && \
+    apk add git && \
+    apk add py3-setuptools && \
+    apk add gnupg && \
+    apk add py3-pip && \
+    apk add jq && \
+    apk add py3-ruamel.yaml && \
+    apk add linux-headers && \
+    apk add py3-yaml && \
+    apk add openssh-client-default && \
+    apk add python3 && \
+    apk add rsync && \
+    apk add terraform && \
+    apk add postgresql14-client && \
+    apk add postgresql14-dev && \
+    pip install awscli && \
+    # curl -sLO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl && \
+    # mv kubectl /usr/bin/kubectl && \
+    # chmod +x /usr/bin/kubectl && \
+    #pip install kubens && \
+    #pip install kubectl && \
+    pip install psycopg2-binary && \
+    apk add  helm && \
+    apk upgrade && \
+    curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64 &&\
+    install -m 555 argocd-linux-amd64 /usr/local/bin/argocd && \
+    rm argocd-linux-amd64 &&\
+    apk add ca-certificates && \    
+    pip install hvac && \
+    pip install ansible-lint && \
+    pip install python-gnupg && \
+    apk add terraform && \
+    pip install hvac 
+    
+    
+
+CMD ["/bin/sh"]
+our dockerfile
