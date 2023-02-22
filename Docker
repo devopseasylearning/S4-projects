@@ -1,0 +1,6 @@
+FROM Ubuntu
+RUN Apt update -y
+USER 0
+RUN mkdir app
+Workdir app
+RUN apt install -y ansible curl vim ngix
