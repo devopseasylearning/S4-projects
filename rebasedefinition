@@ -1,0 +1,4 @@
+rebasing is a process of moving the commits of one branch onto the tip of another branch.
+This means that instead of creating a new merge commit like git merge, git rebase rewrites the project history by creating new commits that apply the changes from one branch onto another.
+It incorporating changes from one branch onto another. 
+This is useful when you have two branches that have diverged and you want to bring the changes from one branch into another.
