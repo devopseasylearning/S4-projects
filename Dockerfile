@@ -1,5 +1,5 @@
 FROM ubuntu
-RUN apt update -y 
+RUN yum update -y 
 USER 0 
 RUN mkdir app
 WORKDIR app 
