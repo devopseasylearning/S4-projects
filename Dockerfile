@@ -1,5 +1,5 @@
 # Use an official Python runtime as the base image
-FROM python:3.9-slim
+FROM python:3.9
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -7,11 +7,14 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Install the required dependencies
-RUN pip install --no-cache-dir Flask
+# Install any needed dependencies specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port 5000 (the default Flask port)
-EXPOSE 5000
+# Define environment variable(s) if needed
+ENV ENV_VAR_NAME=value
 
-# Set the command to run the application when the container starts
+# Expose a port if your application listens on a specific port
+EXPOSE 8000
+
+# Command to run your application when the container starts
 CMD ["python", "app.py"]
