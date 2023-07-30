@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed dependencies specified in requirements.txt
-RUN pip install --no-cache-dir
+RUN pip install
 
 # Define environment variable(s) if needed
 ENV ENV_VAR_NAME=value
