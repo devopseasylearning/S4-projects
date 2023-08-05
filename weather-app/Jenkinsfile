@@ -46,7 +46,7 @@ pipeline {
             echo 'Build was successful!'
         }
         failure {
-            echo 'Build failed!'
+            echo 'Builded!'
         }
     }
 }
