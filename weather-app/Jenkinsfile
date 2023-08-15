@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Check out the code from your version control system (e.g., Git)
+                checkout scm
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // Build your project (e.g., compile code, package assets)
+                sh 'npm install' // Example: for a Node.js project
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Run tests on your project
+                sh 'npm test' // Example: for a Node.js project
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Deploy your project (e.g., to a server, cloud platform)
+                sh 'npm deploy' // Example: for a Node.js project
+            }
+        }
+    }
+    
+    post {
+        success {
+            // Actions to perform if the pipeline succeeds
+            echo 'Pipeline succeeded! Yay!'
+        }
+        failure {
+            // Actions to perform if the pipeline fails
+            echo 'Pipeline failed. Oh no!'
+        }
+    }
+}
