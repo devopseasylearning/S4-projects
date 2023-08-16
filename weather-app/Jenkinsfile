@@ -4,14 +4,12 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout your source code repository (e.g., Git)
                 checkout scm
             }
         }
         
         stage('Build') {
             steps {
-                // Compile your Java application
                 sh 'javac -version'
                 sh 'javac src/*.java -d build'
             }
@@ -19,14 +17,12 @@ pipeline {
         
         stage('Test') {
             steps {
-                // Run your tests (assuming JUnit tests)
                 sh 'java -cp build org.junit.runner.JUnitCore YourTestClass'
             }
         }
         
         stage('Deploy') {
             steps {
-                // Deploy your application (e.g., to a server)
                 sh 'scp -r build user@server:/path/to/deploy'
             }
         }
