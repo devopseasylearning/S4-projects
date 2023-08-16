@@ -15,7 +15,8 @@ pipeline {
             }
             post {
                 success {
-                    archiveArtifacts artifacts: 'build/**/*.class', allowEmptyArchive: true
+                    archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
+
                 }
             }
         }
@@ -33,7 +34,7 @@ pipeline {
             }
         }
         
-        
+
         stage('SonarQube analysis') {
             agent {
                 docker {
