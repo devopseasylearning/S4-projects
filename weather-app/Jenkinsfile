@@ -25,7 +25,7 @@ pipeline {
         stage('Archive') {
             steps {
                 // Archive the build artifacts
-                arctifacts: '**/target/*.jar', allowEmptyArchive: true
+                archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
             }
         }
 
@@ -46,7 +46,7 @@ pipeline {
             echo 'Build was successful!'
         }
         failure {
-            echo 'Blded!'
+            echo 'Build failed!'
         }
     }
 }
