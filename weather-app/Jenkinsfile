@@ -26,11 +26,13 @@ pipeline {
             }
         }
         
+
         stage('Deploy') {
             steps {
                 sh 'scp -r build user@server:/path/to/deploy'
             }
         }
+        
         
         stage('SonarQube analysis') {
             agent {
