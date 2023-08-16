@@ -16,25 +16,22 @@ pipeline {
             post {
                 success {
                     archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-
                 }
             }
         }
         
         stage('Test') {
             steps {
-                sh 'java -cp build org.junit.runner.JUnitCore YourTestClass'
+                sh 'java -cp build org.junit.runner.JUnitCore 4stephane-weatherapp'
             }
         }
         
-
         stage('Deploy') {
             steps {
                 sh 'scp -r build user@server:/path/to/deploy'
             }
         }
         
-
         stage('SonarQube analysis') {
             agent {
                 docker {
@@ -64,4 +61,3 @@ pipeline {
         }
     }
 }
-
