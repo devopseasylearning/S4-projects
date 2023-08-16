@@ -30,6 +30,26 @@ pipeline {
                 sh 'scp -r build user@server:/path/to/deploy'
             }
         }
+
+            stages {
+         stage('SonarQube analysis') {
+            agent {
+                docker {
+                  image 'sonarsource/sonar-scanner-cli:4.7.0'
+                }
+               }
+               environment {
+        CI = 'true'
+        //  scannerHome = tool 'Sonar'
+        scannerHome='/opt/sonar-scanner'
+    }
+            steps{
+                withSonarQubeEnv('Sonar') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
+
     }
     
     post {
