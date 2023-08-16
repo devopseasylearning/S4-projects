@@ -13,6 +13,11 @@ pipeline {
                 sh 'javac -version'
                 sh 'javac src/*.java -d build'
             }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'build/**/*.class', allowEmptyArchive: true
+                }
+            }
         }
         
         stage('Test') {
@@ -56,3 +61,4 @@ pipeline {
         }
     }
 }
+
