@@ -8,17 +8,6 @@ pipeline {
             }
         }
         
-        stage('Build') {
-            steps {
-                sh 'javac -version'
-                sh 'javac src/*.java -d build'
-            }
-            post {
-                success {
-                    archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-                }
-            }
-        }
         
         stage('Test') {
             steps {
