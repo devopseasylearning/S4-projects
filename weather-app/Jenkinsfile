@@ -1,60 +1,35 @@
 pipeline {
     agent any
-
+    
     stages {
-        stage('Checkout') {
+        stage('Checkout SCM') {
             steps {
                 checkout scm
             }
         }
-
+        
         stage('SonarQube analysis') {
-    agent {
-        docker {
-            image 'sonarsource/sonar-scanner-cli:latest'
-        }
-    }
-    environment {
-        CI = 'true'
-        scannerHome = '/opt/sonar-scanner'
-    }
-    steps {
-        script {
-            def scannerCmd = "${scannerHome}/bin/sonar-scanner"
-            sh "${scannerCmd} -Dsonar.host.url=<SONARQUBE_URL>"
-        }
-    }
-}
-
-
-        stage('Build') {
             steps {
-                sh 'mvn clean install -DskipTests'
+                script {
+                    def scannerHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                    def scannerCmd = "${scannerHome}/bin/sonar-scanner"
+                    
+                    sh """
+                    ${scannerCmd} -Dsonar.projectKey=my_project_key \
+                                 -Dsonar.sources=./src \
+                                 -Dsonar.host.url=http://your-sonarqube-server:9000 \
+                                 -Dsonar.login=my_auth_token
+                    """
+                }
             }
         }
-
-        stage('Archive') {
-            steps {
-                archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
+        
+        // Add more stages as needed
     }
-
+    
     post {
         always {
-            deleteDir()
-        }
-        success {
-            echo 'Build was successful!'
-        }
-        failure {
-            echo 'Build failed!'
+            cleanWs()
         }
     }
 }
