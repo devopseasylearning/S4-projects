@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent any
 
     tools {
         // Define tool name and version
@@ -12,6 +12,24 @@ pipeline {
             steps {
                 // Checkout the code from the SCM
                 checkout scm
+            }
+        }
+
+        stage('SonarQube analysis') {
+            agent {
+                docker {
+                    image 'sonarsource/sonar-scanner-cli:latest' // Use latest version
+                }
+            }
+            environment {
+                CI = 'true'
+                scannerHome = '/opt/sonar-scanner'
+            }
+            steps {
+                script {
+                    def scannerCmd = "${scannerHome}/bin/sonar-scanner"
+                    sh "${scannerCmd}"
+                }
             }
         }
 
@@ -50,3 +68,4 @@ pipeline {
         }
     }
 }
+
