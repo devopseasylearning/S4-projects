@@ -1,35 +1,25 @@
 pipeline {
     agent any
-    
+
     stages {
         stage('Checkout SCM') {
             steps {
-                checkout scm
+                // Your checkout steps here
             }
         }
-        
         stage('SonarQube analysis') {
             steps {
                 script {
                     def scannerHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                    def scannerCmd = "${scannerHome}/bin/sonar-scanner"
-                    
-                    sh """
-                    ${scannerCmd} -Dsonar.projectKey=my_project_key \
-                                 -Dsonar.sources=./src \
-                                 -Dsonar.host.url=http://your-sonarqube-server:9000 \
-                                 -Dsonar.login=my_auth_token
-                    """
+                    // Use the scannerHome in the subsequent steps
+                    withSonarQubeEnv('https://sonarqube.ektechsoftwaresolution.com/') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
                 }
             }
         }
-        
         // Add more stages as needed
     }
-    
-    post {
-        always {
-            cleanWs()
-        }
-    }
+
+    // Post-build actions and other pipeline settings
 }
