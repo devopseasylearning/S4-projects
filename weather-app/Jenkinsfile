@@ -9,22 +9,23 @@ pipeline {
         }
 
         stage('SonarQube analysis') {
-            agent {
-                docker {
-                    image 'sonarsource/sonar-scanner-cli:latest'
-                }
-            }
-            environment {
-                CI = 'true'
-                scannerHome = '/opt/sonar-scanner'
-            }
-            steps {
-                script {
-                    def scannerCmd = "${scannerHome}/bin/sonar-scanner"
-                    sh "${scannerCmd}"
-                }
-            }
+    agent {
+        docker {
+            image 'sonarsource/sonar-scanner-cli:latest'
         }
+    }
+    environment {
+        CI = 'true'
+        scannerHome = '/opt/sonar-scanner'
+    }
+    steps {
+        script {
+            def scannerCmd = "${scannerHome}/bin/sonar-scanner"
+            sh "${scannerCmd} -Dsonar.host.url=<SONARQUBE_URL>"
+        }
+    }
+}
+
 
         stage('Build') {
             steps {
