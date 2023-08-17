@@ -12,7 +12,7 @@ pipeline {
                 script {
                     def scannerHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                     // Use the scannerHome in the subsequent steps
-                    withSonarQubeEnv('http://localhost:9000/') {
+                    withSonarQubeEnv('https://sonarqube.ektechsoftwaresolution.com/') {
                         sh "${scannerHome}/bin/sonar-scanner"
                     }
                 }
