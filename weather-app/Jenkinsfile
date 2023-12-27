@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout SCM') {
+            steps {
+                // Your checkout steps here
+            }
+        }
+        stage('SonarQube analysis') {
+            steps {
+                script {
+                    def scannerHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                    // Use the scannerHome in the subsequent steps
+                    withSonarQubeEnv('http://localhost:9000/') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
+        // Add more stages as needed
+    }
+
+    // Post-build actions and other pipeline settings
+}
