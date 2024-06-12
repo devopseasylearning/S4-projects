@@ -48,4 +48,5 @@ COPY --from=0 /clarity-seed/src/test/dist /clarity-seed/test/dist
 COPY --from=0 /clarity-seed/src/dev/dist /clarity-seed/dev/dist
 
 CMD ["./startup.sh"]
+dgsfdgsdfgsdfgsgfsdgdsdfgs
 
