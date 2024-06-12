@@ -1,0 +1,9 @@
+cd ~/Documents && rm -rf GIT &&  mkdir GIT && cd GIT 
+git config --global user.name "[YOUR GITHUB USERNAME]"
+git config --global user.email [YOUR GITHUB EMAIL] 
+git clone [clone any repo in your github with ssh meaing clone ssh]
+git add -A
+git status
+git commit -m "[ENTER YOUR COMMIT MESSAGE HERE]"
+git status
+git push
