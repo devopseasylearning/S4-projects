@@ -24,4 +24,4 @@ functionality to not work as expected)
 
 > Describe any security impact this change may have
 
-FROM HERE, LIFE AND  CAREER CHANGE ARE  POSSIBLE
+FROM HERE, LIFE AND  CAREER CHANGE ARE  POSSIBLE.
